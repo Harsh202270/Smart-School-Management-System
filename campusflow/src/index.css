@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  background: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+main,
+section,
+header,
+footer {
+  overflow-x: hidden;
+}
+
+/* Global Print Stylesheet */
+@media print {
+  @page {
+    margin: 8mm;
+    size: auto;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    min-height: 100% !important;
+    overflow: visible !important;
+    font-size: 11pt !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* When printing, hide all non-printable UI elements */
+  header,
+  aside,
+  nav,
+  button,
+  .print\:hidden,
+  .no-print,
+  .fixed.bottom-5,
+  [role="navigation"],
+  [aria-label="Toggle navigation menu"] {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Make sure modal overlays don't darken or blur the print page */
+  .fixed.inset-0 {
+    position: static !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+
+  /* Allow containers to flow freely during print */
+  #root,
+  .h-screen,
+  .min-h-screen,
+  main,
+  div {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Ensure the printable document is front and center */
+  .printable-document,
+  .printable-document-active {
+    display: block !important;
+    visibility: visible !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 4mm 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: white !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .printable-document *,
+  .printable-document-active * {
+    visibility: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
