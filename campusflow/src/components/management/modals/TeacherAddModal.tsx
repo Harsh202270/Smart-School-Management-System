@@ -7,12 +7,12 @@ interface TeacherAddModalProps {
     fullName: string;
     designation: string;
     department:
-      | 'Science'
-      | 'Mathematics'
-      | 'Languages'
-      | 'Social Studies'
-      | 'Computers'
-      | 'Arts & Sports';
+    | 'Science'
+    | 'Mathematics'
+    | 'Languages'
+    | 'Social Studies'
+    | 'Computers'
+    | 'Arts & Sports';
     qualification: string;
     experienceYears: number;
     phone: string;
@@ -27,7 +27,16 @@ interface TeacherAddModalProps {
 
   onClose: () => void;
 
-  onSubmit: (e: React.FormEvent) => void;
+  onSubmit: (
+    e: React.FormEvent,
+    data: TeacherAddModalProps['formData']
+  ) => Promise<{
+    teacherId: string;
+    password: string;
+  } | void> | {
+    teacherId: string;
+    password: string;
+  } | void;
 }
 
 const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
@@ -45,16 +54,18 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
     return null;
   }
 
-  // =========================
-  // OPEN FILE PICKER
-  // =========================
+  /* =========================================================
+     OPEN FILE PICKER
+  ========================================================= */
+
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
 
-  // =========================
-  // SELECT PHOTO
-  // =========================
+  /* =========================================================
+     SELECT PHOTO
+  ========================================================= */
+
   const handlePhotoChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -64,7 +75,6 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
       return;
     }
 
-    // Check image
     if (!file.type.startsWith('image/')) {
       setPhotoError('Please select a valid image file.');
 
@@ -72,7 +82,6 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
       return;
     }
 
-    // Maximum 2 MB
     if (file.size > 2 * 1024 * 1024) {
       setPhotoError('Photo size must be less than 2 MB.');
 
@@ -82,7 +91,6 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
 
     setPhotoError('');
 
-    // Convert image to base64
     const reader = new FileReader();
 
     reader.onload = () => {
@@ -95,9 +103,10 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
     reader.readAsDataURL(file);
   };
 
-  // =========================
-  // REMOVE PHOTO
-  // =========================
+  /* =========================================================
+     REMOVE PHOTO
+  ========================================================= */
+
   const handleRemovePhoto = () => {
     setFormData({
       ...formData,
@@ -110,6 +119,10 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
       fileInputRef.current.value = '';
     }
   };
+
+  /* =========================================================
+     UI
+  ========================================================= */
 
   return (
     <div
@@ -136,9 +149,10 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
         "
       >
 
-        {/* =========================
+        {/* =====================================================
             HEADER
-        ========================== */}
+        ===================================================== */}
+
         <div
           className="
             flex
@@ -153,21 +167,45 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
           "
         >
           <div className="min-w-0">
-            <h3
-              className="
-                text-lg sm:text-xl
-                font-bold
-                font-serif
-                text-slate-900
-                leading-tight
-              "
-            >
-              Appoint Faculty Member
-            </h3>
 
-            <p className="text-[11px] sm:text-xs text-slate-500 mt-1">
-              Create a new faculty profile
-            </p>
+            <div className="flex items-center gap-2">
+
+              <div
+                className="
+                  w-9 h-9
+                  rounded-xl
+                  bg-slate-900
+                  text-amber-400
+                  flex items-center justify-center
+                  font-bold
+                  shadow-sm
+                "
+              >
+                👤
+              </div>
+
+              <div>
+
+                <h3
+                  className="
+                    text-lg sm:text-xl
+                    font-bold
+                    font-serif
+                    text-slate-900
+                    leading-tight
+                  "
+                >
+                  Appoint Faculty Member
+                </h3>
+
+                <p className="text-[11px] sm:text-xs text-slate-500 mt-1">
+                  Create a new faculty profile
+                </p>
+
+              </div>
+
+            </div>
+
           </div>
 
           <button
@@ -191,11 +229,13 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
           >
             ✕
           </button>
+
         </div>
 
-        {/* =========================
-            SCROLLABLE FORM AREA
-        ========================== */}
+        {/* =====================================================
+            FORM AREA
+        ===================================================== */}
+
         <div
           className="
             overflow-y-auto
@@ -205,8 +245,9 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
             lg:px-8 lg:py-6
           "
         >
+
           <form
-            onSubmit={onSubmit}
+            onSubmit={(e) => onSubmit(e, formData)}
             className="
               space-y-4
               sm:space-y-5
@@ -214,9 +255,10 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
             "
           >
 
-            {/* =========================
-                PHOTO UPLOAD
-            ========================== */}
+            {/* =================================================
+                PHOTO
+            ================================================= */}
+
             <div
               className="
                 border border-slate-200
@@ -225,6 +267,7 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                 bg-slate-50
               "
             >
+
               <div
                 className="
                   flex
@@ -236,6 +279,7 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
               >
 
                 {/* PHOTO PREVIEW */}
+
                 <div
                   className="
                     w-24 h-24
@@ -248,6 +292,7 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                     shrink-0
                   "
                 >
+
                   {formData.photoUrl ? (
                     <img
                       src={formData.photoUrl}
@@ -256,6 +301,7 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                     />
                   ) : (
                     <div className="text-center text-slate-400">
+
                       <div className="text-3xl sm:text-4xl mb-1">
                         👤
                       </div>
@@ -263,11 +309,14 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                       <div className="text-[9px] sm:text-[10px]">
                         No Photo
                       </div>
+
                     </div>
                   )}
+
                 </div>
 
                 {/* UPLOAD AREA */}
+
                 <div className="w-full min-w-0 text-center sm:text-left">
 
                   <label className="block font-bold text-slate-800 mb-1">
@@ -278,7 +327,6 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                     Upload a profile photo for this faculty member.
                   </p>
 
-                  {/* HIDDEN FILE INPUT */}
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -287,18 +335,17 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                     className="hidden"
                   />
 
-                  {/* BUTTONS */}
                   <div
                     className="
                       flex
                       flex-col
-                      xs:flex-row
                       sm:flex-row
                       gap-2
                       justify-center
                       sm:justify-start
                     "
                   >
+
                     <button
                       type="button"
                       onClick={handleUploadClick}
@@ -318,7 +365,6 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                       📷 Upload Photo
                     </button>
 
-                    {/* CHANGE PHOTO */}
                     {formData.photoUrl && (
                       <button
                         type="button"
@@ -340,7 +386,6 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                       </button>
                     )}
 
-                    {/* REMOVE PHOTO */}
                     {formData.photoUrl && (
                       <button
                         type="button"
@@ -361,26 +406,31 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                         Remove
                       </button>
                     )}
+
                   </div>
 
                   <p className="text-[9px] sm:text-[10px] text-slate-400 mt-2">
                     JPG, JPEG, PNG or WEBP • Maximum 2 MB
                   </p>
 
-                  {/* ERROR */}
                   {photoError && (
                     <p className="text-[10px] text-red-600 mt-2 font-semibold">
                       {photoError}
                     </p>
                   )}
+
                 </div>
+
               </div>
+
             </div>
 
-            {/* =========================
+            {/* =================================================
                 FULL NAME
-            ========================== */}
+            ================================================= */}
+
             <div>
+
               <label className="block font-semibold text-slate-700 mb-1">
                 Full Name & Title
               </label>
@@ -409,15 +459,17 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                 "
                 placeholder="Enter full name"
               />
+
             </div>
 
-            {/* =========================
+            {/* =================================================
                 DESIGNATION + DEPARTMENT
-            ========================== */}
+            ================================================= */}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-              {/* DESIGNATION */}
               <div className="min-w-0">
+
                 <label className="block font-semibold text-slate-700 mb-1">
                   Designation
                 </label>
@@ -446,10 +498,11 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                   "
                   placeholder="e.g. TGT Science"
                 />
+
               </div>
 
-              {/* DEPARTMENT */}
               <div className="min-w-0">
+
                 <label className="block font-semibold text-slate-700 mb-1">
                   Department
                 </label>
@@ -476,6 +529,7 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                     transition
                   "
                 >
+
                   <option value="Science">
                     Science
                   </option>
@@ -499,17 +553,21 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                   <option value="Arts & Sports">
                     Arts & Sports
                   </option>
+
                 </select>
+
               </div>
+
             </div>
 
-            {/* =========================
+            {/* =================================================
                 QUALIFICATION + EXPERIENCE
-            ========================== */}
+            ================================================= */}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-              {/* QUALIFICATION */}
               <div className="min-w-0">
+
                 <label className="block font-semibold text-slate-700 mb-1">
                   Qualifications
                 </label>
@@ -538,10 +596,11 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                   "
                   placeholder="e.g. M.Sc., B.Ed."
                 />
+
               </div>
 
-              {/* EXPERIENCE */}
               <div className="min-w-0">
+
                 <label className="block font-semibold text-slate-700 mb-1">
                   Teaching Experience (Years)
                 </label>
@@ -570,16 +629,19 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                     transition
                   "
                 />
+
               </div>
+
             </div>
 
-            {/* =========================
+            {/* =================================================
                 EMAIL + PHONE
-            ========================== */}
+            ================================================= */}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-              {/* EMAIL */}
               <div className="min-w-0">
+
                 <label className="block font-semibold text-slate-700 mb-1">
                   Official Email
                 </label>
@@ -609,10 +671,11 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                   "
                   placeholder="teacher@school.com"
                 />
+
               </div>
 
-              {/* PHONE */}
               <div className="min-w-0">
+
                 <label className="block font-semibold text-slate-700 mb-1">
                   Contact Phone
                 </label>
@@ -642,13 +705,17 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                   "
                   placeholder="+91 XXXXX XXXXX"
                 />
+
               </div>
+
             </div>
 
-            {/* =========================
+            {/* =================================================
                 SALARY
-            ========================== */}
+            ================================================= */}
+
             <div>
+
               <label className="block font-semibold text-slate-700 mb-1">
                 Basic Monthly Salary (₹)
               </label>
@@ -680,11 +747,58 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                 "
                 placeholder="55000"
               />
+
             </div>
 
-            {/* =========================
+            {/* =================================================
+                SECURITY INFORMATION
+            ================================================= */}
+
+            <div
+              className="
+                rounded-xl
+                border border-amber-200
+                bg-amber-50
+                px-4 py-3
+              "
+            >
+
+              <div className="flex items-start gap-3">
+
+                <div
+                  className="
+                    w-8 h-8
+                    rounded-lg
+                    bg-amber-100
+                    flex items-center justify-center
+                    shrink-0
+                  "
+                >
+                  🔐
+                </div>
+
+                <div>
+
+                  <p className="font-bold text-slate-800">
+                    Login credentials
+                  </p>
+
+                  <p className="text-[10px] sm:text-[11px] text-slate-600 mt-1 leading-relaxed">
+                    A secure random initial password and Faculty Employee ID
+                    will be generated automatically after this faculty member
+                    is appointed.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* =================================================
                 BUTTONS
-            ========================== */}
+            ================================================= */}
+
             <div
               className="
                 flex
@@ -696,6 +810,7 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                 border-t border-slate-200
               "
             >
+
               <button
                 type="button"
                 onClick={onClose}
@@ -728,14 +843,18 @@ const TeacherAddModal: React.FC<TeacherAddModalProps> = ({
                   active:bg-slate-700
                   transition
                   cursor-pointer
+                  shadow-sm
                 "
               >
                 Appoint Faculty Member
               </button>
+
             </div>
 
           </form>
+
         </div>
+
       </div>
     </div>
   );
