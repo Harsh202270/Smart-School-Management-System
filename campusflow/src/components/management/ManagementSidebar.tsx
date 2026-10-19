@@ -3,6 +3,7 @@ import {
   LayoutDashboard,
   Users,
   GraduationCap,
+  Wallet,
   BookOpen,
   Calendar,
   Clock,
@@ -23,6 +24,7 @@ export type ManagementModule =
   | 'dashboard'
   | 'students'
   | 'teachers'
+  | 'fee-structure'
   | 'classes'
   | 'timetable'
   | 'exams'
@@ -55,87 +57,92 @@ export const ManagementSidebar: React.FC<ManagementSidebarProps> = ({
     label: string;
     icon: React.ElementType;
   }[] = [
-    {
-      id: 'dashboard',
-      label: 'Operations Dashboard',
-      icon: LayoutDashboard
-    },
-    {
-      id: 'students',
-      label: 'Student Management',
-      icon: GraduationCap
-    },
-    {
-      id: 'teachers',
-      label: 'Faculty & Staff',
-      icon: Users
-    },
-    {
-      id: 'classes',
-      label: 'Classes & Structure',
-      icon: BookOpen
-    },
-    {
-      id: 'timetable',
-      label: 'Master Timetable',
-      icon: Clock
-    },
-    {
-      id: 'exams',
-      label: 'Exams & Question Papers',
-      icon: FileText
-    },
-    {
-      id: 'fees',
-      label: 'Fee Accounts & Dues',
-      icon: CreditCard
-    },
-    {
-      id: 'payroll',
-      label: 'Staff Payroll & Slips',
-      icon: Banknote
-    },
-    {
-      id: 'library',
-      label: 'Central Library',
-      icon: Library
-    },
-    {
-      id: 'transport',
-      label: 'Transport & Fleet',
-      icon: Bus
-    },
-    {
-      id: 'notices',
-      label: 'Notices & Circulars',
-      icon: Bell
-    },
-    {
-      id: 'events',
-      label: 'School Calendar',
-      icon: Calendar
-    },
-    {
-      id: 'id-cards',
-      label: 'ID Card Studio',
-      icon: QrCode
-    },
-    {
-      id: 'certificates',
-      label: 'Certificates & TC',
-      icon: Award
-    },
-    {
-      id: 'settings',
-      label: 'School Settings',
-      icon: Settings
-    },
-    {
-      id: 'audit-logs',
-      label: 'Security Audit Logs',
-      icon: ShieldCheck
-    }
-  ];
+      {
+        id: 'dashboard',
+        label: 'Operations Dashboard',
+        icon: LayoutDashboard
+      },
+      {
+        id: 'students',
+        label: 'Student Management',
+        icon: GraduationCap
+      },
+      {
+        id: 'teachers',
+        label: 'Faculty & Staff',
+        icon: Users
+      },
+      {
+        id: 'classes',
+        label: 'Classes & Structure',
+        icon: BookOpen
+      },
+      {
+        id: 'timetable',
+        label: 'Master Timetable',
+        icon: Clock
+      },
+      {
+        id: 'exams',
+        label: 'Exams & Question Papers',
+        icon: FileText
+      },
+      {
+        id: 'fees',
+        label: 'Fee Accounts & Dues',
+        icon: CreditCard
+      },
+      {
+        id: 'fee-structure',
+        label: 'Fee Structure',
+        icon: Wallet
+      },
+      {
+        id: 'payroll',
+        label: 'Staff Payroll & Slips',
+        icon: Banknote
+      },
+      {
+        id: 'library',
+        label: 'Central Library',
+        icon: Library
+      },
+      {
+        id: 'transport',
+        label: 'Transport & Fleet',
+        icon: Bus
+      },
+      {
+        id: 'notices',
+        label: 'Notices & Circulars',
+        icon: Bell
+      },
+      {
+        id: 'events',
+        label: 'School Calendar',
+        icon: Calendar
+      },
+      {
+        id: 'id-cards',
+        label: 'ID Card Studio',
+        icon: QrCode
+      },
+      {
+        id: 'certificates',
+        label: 'Certificates & TC',
+        icon: Award
+      },
+      {
+        id: 'settings',
+        label: 'School Settings',
+        icon: Settings
+      },
+      {
+        id: 'audit-logs',
+        label: 'Security Audit Logs',
+        icon: ShieldCheck
+      }
+    ];
 
   return (
     <aside
@@ -158,10 +165,9 @@ export const ManagementSidebar: React.FC<ManagementSidebarProps> = ({
 
         overflow-y-auto
 
-        ${
-          mobileMenuOpen
-            ? 'translate-x-0'
-            : '-translate-x-full md:translate-x-0'
+        ${mobileMenuOpen
+          ? 'translate-x-0'
+          : '-translate-x-full md:translate-x-0'
         }
       `}
     >
@@ -208,10 +214,9 @@ export const ManagementSidebar: React.FC<ManagementSidebarProps> = ({
                 transition
                 cursor-pointer
 
-                ${
-                  isActive
-                    ? 'bg-amber-500 text-slate-950 font-bold shadow-xs'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                ${isActive
+                  ? 'bg-amber-500 text-slate-950 font-bold shadow-xs'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-900'
                 }
               `}
             >
